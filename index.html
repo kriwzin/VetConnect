@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VetClinic - Sistema de Gestão Veterinária</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <i class="fas fa-paw"></i>
+            <h2>VetClinic</h2>
+        </div>
+        <nav class="sidebar-nav">
+            <a href="#" class="nav-item active" data-page="dashboard">
+                <i class="fas fa-home"></i>
+                <span>Dashboard</span>
+            </a>
+            <a href="#" class="nav-item" data-page="agendamentos">
+                <i class="fas fa-calendar-alt"></i>
+                <span>Agendamentos</span>
+            </a>
+            <a href="#" class="nav-item" data-page="pacientes">
+                <i class="fas fa-paw"></i>
+                <span>Pacientes</span>
+            </a>
+            <a href="#" class="nav-item" data-page="financeiro">
+                <i class="fas fa-chart-line"></i>
+                <span>Financeiro</span>
+            </a>
+            <a href="#" class="nav-item" data-page="estoque">
+                <i class="fas fa-box"></i>
+                <span>Estoque</span>
+            </a>
+            <a href="#" class="nav-item" data-page="equipe">
+                <i class="fas fa-users"></i>
+                <span>Equipe</span>
+            </a>
+            <a href="#" class="nav-item" data-page="configuracoes">
+                <i class="fas fa-cog"></i>
+                <span>Configurações</span>
+            </a>
+        </nav>
+    </aside>
+
+    <!-- Main Content Area -->
+    <div class="main-wrapper">
+        <!-- Top Header -->
+        <header class="top-header">
+            <div class="search-bar">
+                <i class="fas fa-search"></i>
+                <input type="text" placeholder="Buscar pacientes, consultas...">
+            </div>
+            <div class="header-actions">
+                <button class="icon-btn">
+                    <i class="fas fa-bell"></i>
+                    <span class="badge">3</span>
+                </button>
+                <div class="user-profile">
+                    <div class="avatar">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div class="user-info">
+                        <span class="user-name">Admin</span>
+                        <span class="user-role">Administrador</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Page Content -->
+        <main class="content">
+            <!-- Dashboard Page -->
+            <div id="dashboard-page" class="page active">
+                <div class="page-header">
+                    <h1>Dashboard</h1>
+                    <p class="page-subtitle">Visão geral da clínica</p>
+                </div>
+
+                <!-- Summary Cards -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon" style="background-color: #e8f5e9;">
+                            <i class="fas fa-calendar-check" style="color: #2ECC71;"></i>
+                        </div>
+                        <div class="stat-info">
+                            <span class="stat-label">Consultas Hoje</span>
+                            <span class="stat-value">12</span>
+                            <span class="stat-change positive">+2 desde ontem</span>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon" style="background-color: #e3f2fd;">
+                            <i class="fas fa-paw" style="color: #2196F3;"></i>
+                        </div>
+                        <div class="stat-info">
+                            <span class="stat-label">Novos Pacientes</span>
+                            <span class="stat-value">5</span>
+                            <span class="stat-change positive">+15% este mês</span>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon" style="background-color: #fff3e0;">
+                            <i class="fas fa-dollar-sign" style="color: #FF9800;"></i>
+                        </div>
+                        <div class="stat-info">
+                            <span class="stat-label">Receita do Mês</span>
+                            <span class="stat-value">R$ 24.500,00</span>
+                            <span class="stat-change positive">+8% vs mês anterior</span>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon" style="background-color: #ffebee;">
+                            <i class="fas fa-times-circle" style="color: #f44336;"></i>
+                        </div>
+                        <div class="stat-info">
+                            <span class="stat-label">Cancelamentos</span>
+                            <span class="stat-value">2</span>
+                            <span class="stat-change negative">-50% vs semana anterior</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Actions -->
+                <div class="quick-actions">
+                    <button class="btn btn-primary">
+                        <i class="fas fa-plus"></i>
+                        Agendar Consulta
+                    </button>
+                    <button class="btn btn-secondary">
+                        <i class="fas fa-paw"></i>
+                        Novo Paciente
+                    </button>
+                    <button class="btn btn-secondary">
+                        <i class="fas fa-box"></i>
+                        Ver Estoque
+                    </button>
+                </div>
+
+                <!-- Main Content Grid -->
+                <div class="dashboard-grid">
+                    <!-- Appointments Today -->
+                    <div class="card appointments-card">
+                        <div class="card-header">
+                            <h3>Consultas de Hoje</h3>
+                            <button class="btn-link">Ver todas</button>
+                        </div>
+                        <div class="table-container">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Horário</th>
+                                        <th>Pet</th>
+                                        <th>Tutor</th>
+                                        <th>Veterinário</th>
+                                        <th>Status</th>
+                                        <th>Ações</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="appointments-tbody">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Side Cards -->
+                    <div class="side-cards">
+                        <!-- Stock Alerts -->
+                        <div class="card alert-card">
+                            <div class="card-header">
+                                <h3>Alertas de Estoque</h3>
+                                <i class="fas fa-exclamation-triangle" style="color: #FF9800;"></i>
+                            </div>
+                            <div class="alert-list" id="stock-alerts">
+                            </div>
+                        </div>
+
+                        <!-- Upcoming Vaccines -->
+                        <div class="card">
+                            <div class="card-header">
+                                <h3>Próximas Vacinas</h3>
+                                <i class="fas fa-syringe" style="color: #2ECC71;"></i>
+                            </div>
+                            <div class="vaccine-list" id="vaccine-list">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Charts Section -->
+                <div class="charts-grid">
+                    <div class="card chart-card">
+                        <div class="card-header">
+                            <h3>Receita Semanal</h3>
+                        </div>
+                        <canvas id="revenueChart"></canvas>
+                    </div>
+                    <div class="card chart-card">
+                        <div class="card-header">
+                            <h3>Serviços Mais Solicitados</h3>
+                        </div>
+                        <canvas id="servicesChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Agendamentos Page -->
+            <div id="agendamentos-page" class="page">
+                <div class="page-header">
+                    <div>
+                        <h1>Agendamentos</h1>
+                        <p class="page-subtitle">Gerencie as consultas da clínica</p>
+                    </div>
+                    <button class="btn btn-primary">
+                        <i class="fas fa-plus"></i>
+                        Nova Consulta
+                    </button>
+                </div>
+
+                <div class="filters-bar">
+                    <div class="filter-group">
+                        <label>Data:</label>
+                        <input type="date" class="form-control" value="2025-11-08">
+                    </div>
+                    <div class="filter-group">
+                        <label>Veterinário:</label>
+                        <select class="form-control">
+                            <option>Todos</option>
+                            <option>Dra. Maria Santos</option>
+                            <option>Dr. Pedro Oliveira</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label>Status:</label>
+                        <select class="form-control">
+                            <option>Todos</option>
+                            <option>Confirmado</option>
+                            <option>Em andamento</option>
+                            <option>Concluído</option>
+                            <option>Aguardando</option>
+                        </select>
+                    </div>
+                    <div class="view-toggle">
+                        <button class="btn-icon active"><i class="fas fa-list"></i></button>
+                        <button class="btn-icon"><i class="fas fa-calendar"></i></button>
+                    </div>
+                </div>
+
+                <div class="appointments-list" id="appointments-list">
+                </div>
+            </div>
+
+            <!-- Pacientes Page -->
+            <div id="pacientes-page" class="page">
+                <div class="page-header">
+                    <div>
+                        <h1>Pacientes</h1>
+                        <p class="page-subtitle">Cadastro e histórico de pets</p>
+                    </div>
+                    <button class="btn btn-primary">
+                        <i class="fas fa-plus"></i>
+                        Adicionar Paciente
+                    </button>
+                </div>
+
+                <div class="search-filter-bar">
+                    <div class="search-input">
+                        <i class="fas fa-search"></i>
+                        <input type="text" placeholder="Buscar por nome do pet ou tutor...">
+                    </div>
+                    <div class="filter-buttons">
+                        <button class="btn btn-outline">Todos</button>
+                        <button class="btn btn-outline">Cães</button>
+                        <button class="btn btn-outline">Gatos</button>
+                        <button class="btn btn-outline">Outros</button>
+                    </div>
+                </div>
+
+                <div class="patients-grid" id="patients-grid">
+                </div>
+            </div>
+
+            <!-- Financeiro Page -->
+            <div id="financeiro-page" class="page">
+                <div class="page-header">
+                    <h1>Financeiro</h1>
+                    <p class="page-subtitle">Controle financeiro da clínica</p>
+                </div>
+
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon" style="background-color: #e8f5e9;">
+                            <i class="fas fa-arrow-up" style="color: #2ECC71;"></i>
+                        </div>
+                        <div class="stat-info">
+                            <span class="stat-label">Receita Total</span>
+                            <span class="stat-value">R$ 24.500,00</span>
+                            <span class="stat-change positive">+12% este mês</span>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon" style="background-color: #ffebee;">
+                            <i class="fas fa-arrow-down" style="color: #f44336;"></i>
+                        </div>
+                        <div class="stat-info">
+                            <span class="stat-label">Despesas</span>
+                            <span class="stat-value">R$ 8.200,00</span>
+                            <span class="stat-change negative">+5% este mês</span>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon" style="background-color: #e3f2fd;">
+                            <i class="fas fa-chart-line" style="color: #2196F3;"></i>
+                        </div>
+                        <div class="stat-info">
+                            <span class="stat-label">Lucro Líquido</span>
+                            <span class="stat-value">R$ 16.300,00</span>
+                            <span class="stat-change positive">+15% este mês</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Transações Recentes</h3>
+                        <div class="filter-group">
+                            <input type="date" class="form-control" style="margin-right: 8px;">
+                            <input type="date" class="form-control">
+                        </div>
+                    </div>
+                    <div class="table-container">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Data</th>
+                                    <th>Descrição</th>
+                                    <th>Categoria</th>
+                                    <th>Valor</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>08/11/2025</td>
+                                    <td>Consulta - Rex</td>
+                                    <td><span class="badge badge-success">Receita</span></td>
+                                    <td class="amount positive">+ R$ 150,00</td>
+                                </tr>
+                                <tr>
+                                    <td>08/11/2025</td>
+                                    <td>Cirurgia - Bob</td>
+                                    <td><span class="badge badge-success">Receita</span></td>
+                                    <td class="amount positive">+ R$ 800,00</td>
+                                </tr>
+                                <tr>
+                                    <td>07/11/2025</td>
+                                    <td>Compra de medicamentos</td>
+                                    <td><span class="badge badge-error">Despesa</span></td>
+                                    <td class="amount negative">- R$ 450,00</td>
+                                </tr>
+                                <tr>
+                                    <td>07/11/2025</td>
+                                    <td>Vacinação - Luna</td>
+                                    <td><span class="badge badge-success">Receita</span></td>
+                                    <td class="amount positive">+ R$ 120,00</td>
+                                </tr>
+                                <tr>
+                                    <td>06/11/2025</td>
+                                    <td>Manutenção de equipamentos</td>
+                                    <td><span class="badge badge-error">Despesa</span></td>
+                                    <td class="amount negative">- R$ 300,00</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Estoque Page -->
+            <div id="estoque-page" class="page">
+                <div class="page-header">
+                    <div>
+                        <h1>Estoque</h1>
+                        <p class="page-subtitle">Controle de medicamentos e produtos</p>
+                    </div>
+                    <button class="btn btn-primary">
+                        <i class="fas fa-plus"></i>
+                        Adicionar Produto
+                    </button>
+                </div>
+
+                <div class="search-filter-bar">
+                    <div class="search-input">
+                        <i class="fas fa-search"></i>
+                        <input type="text" placeholder="Buscar produtos...">
+                    </div>
+                    <div class="filter-buttons">
+                        <button class="btn btn-outline">Todos</button>
+                        <button class="btn btn-outline">Medicamentos</button>
+                        <button class="btn btn-outline">Vacinas</button>
+                        <button class="btn btn-outline">Alimentos</button>
+                    </div>
+                </div>
+
+                <div class="products-grid">
+                    <div class="product-card alert">
+                        <div class="product-header">
+                            <div class="product-icon">
+                                <i class="fas fa-syringe"></i>
+                            </div>
+                            <span class="alert-badge">Estoque Baixo</span>
+                        </div>
+                        <h4>Vacina Antirrábica</h4>
+                        <div class="product-info">
+                            <div class="info-item">
+                                <span class="label">Quantidade:</span>
+                                <span class="value warning">5 unidades</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="label">Mínimo:</span>
+                                <span class="value">10 unidades</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="label">Validade:</span>
+                                <span class="value">15/12/2025</span>
+                            </div>
+                        </div>
+                        <button class="btn btn-sm btn-primary">Reabastecer</button>
+                    </div>
+
+                    <div class="product-card alert">
+                        <div class="product-header">
+                            <div class="product-icon">
+                                <i class="fas fa-pills"></i>
+                            </div>
+                            <span class="alert-badge">Estoque Baixo</span>
+                        </div>
+                        <h4>Antibiótico XYZ</h4>
+                        <div class="product-info">
+                            <div class="info-item">
+                                <span class="label">Quantidade:</span>
+                                <span class="value warning">3 unidades</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="label">Mínimo:</span>
+                                <span class="value">15 unidades</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="label">Validade:</span>
+                                <span class="value">20/01/2026</span>
+                            </div>
+                        </div>
+                        <button class="btn btn-sm btn-primary">Reabastecer</button>
+                    </div>
+
+                    <div class="product-card">
+                        <div class="product-header">
+                            <div class="product-icon">
+                                <i class="fas fa-syringe"></i>
+                            </div>
+                        </div>
+                        <h4>Vacina V10</h4>
+                        <div class="product-info">
+                            <div class="info-item">
+                                <span class="label">Quantidade:</span>
+                                <span class="value">25 unidades</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="label">Mínimo:</span>
+                                <span class="value">10 unidades</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="label">Validade:</span>
+                                <span class="value">30/06/2026</span>
+                            </div>
+                        </div>
+                        <button class="btn btn-sm btn-secondary">Editar</button>
+                    </div>
+
+                    <div class="product-card">
+                        <div class="product-header">
+                            <div class="product-icon">
+                                <i class="fas fa-pills"></i>
+                            </div>
+                        </div>
+                        <h4>Anti-inflamatório</h4>
+                        <div class="product-info">
+                            <div class="info-item">
+                                <span class="label">Quantidade:</span>
+                                <span class="value">40 unidades</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="label">Mínimo:</span>
+                                <span class="value">20 unidades</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="label">Validade:</span>
+                                <span class="value">15/08/2026</span>
+                            </div>
+                        </div>
+                        <button class="btn btn-sm btn-secondary">Editar</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Equipe Page -->
+            <div id="equipe-page" class="page">
+                <div class="page-header">
+                    <div>
+                        <h1>Equipe</h1>
+                        <p class="page-subtitle">Gerenciamento de funcionários</p>
+                    </div>
+                    <button class="btn btn-primary">
+                        <i class="fas fa-plus"></i>
+                        Adicionar Funcionário
+                    </button>
+                </div>
+
+                <div class="team-grid" id="team-grid">
+                </div>
+            </div>
+
+            <!-- Configurações Page -->
+            <div id="configuracoes-page" class="page">
+                <div class="page-header">
+                    <h1>Configurações</h1>
+                    <p class="page-subtitle">Configurações do sistema</p>
+                </div>
+
+                <div class="settings-container">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>Informações da Clínica</h3>
+                        </div>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label>Nome da Clínica</label>
+                                <input type="text" class="form-control" value="VetClinic">
+                            </div>
+                            <div class="form-group">
+                                <label>CNPJ</label>
+                                <input type="text" class="form-control" value="12.345.678/0001-90">
+                            </div>
+                            <div class="form-group">
+                                <label>Telefone</label>
+                                <input type="text" class="form-control" value="(11) 98765-4321">
+                            </div>
+                            <div class="form-group">
+                                <label>Email</label>
+                                <input type="email" class="form-control" value="contato@vetclinic.com.br">
+                            </div>
+                            <div class="form-group full-width">
+                                <label>Endereço</label>
+                                <input type="text" class="form-control" value="Rua das Flores, 123 - São Paulo, SP">
+                            </div>
+                        </div>
+                        <button class="btn btn-primary">Salvar Alterações</button>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>Horário de Funcionamento</h3>
+                        </div>
+                        <div class="schedule-list">
+                            <div class="schedule-item">
+                                <span class="day">Segunda a Sexta</span>
+                                <span class="time">08:00 - 18:00</span>
+                            </div>
+                            <div class="schedule-item">
+                                <span class="day">Sábado</span>
+                                <span class="time">08:00 - 12:00</span>
+                            </div>
+                            <div class="schedule-item">
+                                <span class="day">Domingo</span>
+                                <span class="time">Fechado</span>
+                            </div>
+                        </div>
+                        <button class="btn btn-secondary">Editar Horários</button>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
