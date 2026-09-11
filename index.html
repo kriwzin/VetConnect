@@ -10,7 +10,6 @@
 </head>
 
 <body>
-    <div id="app"></div>
     <!-- Sidebar Navigation -->
     <aside class="sidebar">
         <div class="sidebar-header">
@@ -41,6 +40,10 @@
             <a href="#" class="nav-item" data-page="equipe">
                 <i class="fas fa-users"></i>
                 <span>Equipe</span>
+            </a>
+            <a href="#" class="nav-item" data-page="adocao">
+                <i class="fas fa-heart"></i>
+                <span>Adoção</span>
             </a>
             <a href="#" class="nav-item" data-page="configuracoes">
                 <i class="fas fa-cog"></i>
@@ -525,6 +528,35 @@
                 </div>
             </div>
 
+            <!-- Adoção Page -->
+            <div id="adocao-page" class="page">
+                <div class="page-header">
+                    <div>
+                        <h1>Adoção</h1>
+                        <p class="page-subtitle">Animais disponíveis para adoção responsável</p>
+                    </div>
+                    <button class="btn btn-primary" id="btn-open-adoption-modal">
+                        <i class="fas fa-plus"></i>
+                        Adicionar Animal
+                    </button>
+                </div>
+
+                <div class="search-filter-bar">
+                    <div class="search-input">
+                        <i class="fas fa-search"></i>
+                        <input type="text" id="adoption-search" placeholder="Buscar por nome, raça ou espécie...">
+                    </div>
+                    <div class="filter-buttons" id="adoption-filters">
+                        <button class="btn btn-outline active" data-filter="all">Todos</button>
+                        <button class="btn btn-outline" data-filter="Cão">Cães</button>
+                        <button class="btn btn-outline" data-filter="Gato">Gatos</button>
+                    </div>
+                </div>
+
+                <div class="patients-grid" id="adoption-grid">
+                </div>
+            </div>
+
             <!-- Configurações Page -->
             <div id="configuracoes-page" class="page">
                 <div class="page-header">
@@ -585,6 +617,104 @@
                 </div>
             </div>
         </main>
+    </div>
+
+    <!-- Modal: Adicionar Animal para Adoção -->
+    <div class="modal-overlay" id="modal-add-animal">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h3>Cadastrar Animal para Adoção</h3>
+                <button class="modal-close-btn" id="modal-close-btn">&times;</button>
+            </div>
+            <form id="form-add-animal">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label class="form-label">Nome do Animal *</label>
+                        <input type="text" class="form-control" id="animal-name" required placeholder="Ex: Fred">
+                    </div>
+                    <div class="form-row" style="display: flex; gap: var(--space-12);">
+                        <div class="form-group" style="flex: 1;">
+                            <label class="form-label">Espécie *</label>
+                            <select class="form-control" id="animal-species" required>
+                                <option value="Cão">Cão</option>
+                                <option value="Gato">Gato</option>
+                            </select>
+                        </div>
+                        <div class="form-group" style="flex: 1;">
+                            <label class="form-label">Sexo *</label>
+                            <select class="form-control" id="animal-gender" required>
+                                <option value="Macho">Macho</option>
+                                <option value="Fêmea">Fêmea</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row" style="display: flex; gap: var(--space-12);">
+                        <div class="form-group" style="flex: 1;">
+                            <label class="form-label">Raça *</label>
+                            <input type="text" class="form-control" id="animal-breed" required placeholder="Ex: Vira-lata">
+                        </div>
+                        <div class="form-group" style="flex: 1;">
+                            <label class="form-label">Idade *</label>
+                            <input type="text" class="form-control" id="animal-age" required placeholder="Ex: 1 ano">
+                        </div>
+                    </div>
+                    <div class="form-row" style="display: flex; gap: var(--space-12);">
+                        <div class="form-group" style="flex: 1;">
+                            <label class="form-label">Porte</label>
+                            <select class="form-control" id="animal-size">
+                                <option value="Porte Pequeno">Porte Pequeno</option>
+                                <option value="Porte Médio" selected>Porte Médio</option>
+                                <option value="Porte Grande">Porte Grande</option>
+                            </select>
+                        </div>
+                        <div class="form-group" style="flex: 1;">
+                            <label class="form-label">Status</label>
+                            <select class="form-control" id="animal-status">
+                                <option value="Disponível">Disponível</option>
+                                <option value="Em processo">Em processo</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">URL da Imagem / Foto Real</label>
+                        <input type="text" class="form-control" id="animal-image" placeholder="Ex: images/adoption/pipoca.jpg (ou deixe em branco)">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Descrição / Observações</label>
+                        <textarea class="form-control" id="animal-desc" rows="2" placeholder="Ex: Muito carinhoso, dócil, castrado e vacinado"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" id="modal-cancel-btn">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Cadastrar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal: Quero Adotar -->
+    <div class="modal-overlay" id="modal-adopt-interest">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h3>Interesse em Adoção</h3>
+                <button class="modal-close-btn" id="modal-adopt-close-btn">&times;</button>
+            </div>
+            <form id="form-adopt-interest">
+                <div class="modal-body" id="modal-adopt-body">
+                    <!-- Populated dynamically -->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" id="modal-adopt-cancel-btn">Voltar</button>
+                    <button type="submit" class="btn btn-primary"><i class="fas fa-heart"></i> Confirmar Interesse</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div class="toast-notification" id="toast-notification">
+        <i class="fas fa-check-circle"></i>
+        <span id="toast-message">Ação realizada com sucesso!</span>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>

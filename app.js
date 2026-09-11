@@ -125,6 +125,104 @@ const data = {
       role: "Veterinário",
       specialty: "Ortopedia"
     }
+  ],
+  adoption: [
+    {
+      id: 1,
+      name: "Pipoca",
+      species: "Cão",
+      breed: "Beagle Mix (SRD)",
+      age: "1 ano",
+      gender: "Fêmea",
+      size: "Porte Médio",
+      status: "Disponível",
+      image: "images/adoption/pipoca.jpg",
+      description: "Dócil, brincalhona, vacinada e castrada."
+    },
+    {
+      id: 2,
+      name: "Thor",
+      species: "Cão",
+      breed: "Golden Retriever Mix",
+      age: "2 anos",
+      gender: "Macho",
+      size: "Porte Grande",
+      status: "Disponível",
+      image: "images/adoption/thor.jpg",
+      description: "Amoroso, sociável com crianças e outros cães."
+    },
+    {
+      id: 3,
+      name: "Mia",
+      species: "Gato",
+      breed: "Frajola",
+      age: "1 ano",
+      gender: "Fêmea",
+      size: "Porte Pequeno",
+      status: "Disponível",
+      image: "images/adoption/mia.jpg",
+      description: "Calma, carinhosa, já castrada e vacinada."
+    },
+    {
+      id: 4,
+      name: "Bob",
+      species: "Cão",
+      breed: "Vira-lata Caramelo",
+      age: "3 anos",
+      gender: "Macho",
+      size: "Porte Médio",
+      status: "Disponível",
+      image: "images/adoption/bob.jpg",
+      description: "Muito leal, companheiro e adora passeios ao ar livre."
+    },
+    {
+      id: 5,
+      name: "Luna",
+      species: "Gato",
+      breed: "Tricolor (Calico)",
+      age: "7 meses",
+      gender: "Fêmea",
+      size: "Porte Pequeno",
+      status: "Em processo",
+      image: "images/adoption/luna.jpg",
+      description: "Filhotinha curiosa, muito ativa e cheia de energia."
+    },
+    {
+      id: 6,
+      name: "Simba",
+      species: "Gato",
+      breed: "Gato Laranja (Tabby)",
+      age: "2 anos",
+      gender: "Macho",
+      size: "Porte Médio",
+      status: "Disponível",
+      image: "images/adoption/simba.jpg",
+      description: "Super ronronento, adora colinho e sonecas ao sol."
+    },
+    {
+      id: 7,
+      name: "Mel",
+      species: "Cão",
+      breed: "Maltês / Poodle",
+      age: "4 anos",
+      gender: "Fêmea",
+      size: "Porte Pequeno",
+      status: "Disponível",
+      image: "images/adoption/mel.jpg",
+      description: "Porte pequeno ideal para apartamento, dócil e afetuosa."
+    },
+    {
+      id: 8,
+      name: "Chico",
+      species: "Cão",
+      breed: "Pastor Alemão Mix",
+      age: "2 anos",
+      gender: "Macho",
+      size: "Porte Grande",
+      status: "Disponível",
+      image: "images/adoption/chico.jpg",
+      description: "Excelente cão companheiro, leal, inteligente e obediente."
+    }
   ]
 };
 
@@ -373,6 +471,240 @@ function initializeCharts() {
   }
 }
 
+// Current filter and search state for adoption
+let currentAdoptionFilter = 'all';
+let currentAdoptionSearch = '';
+
+// Toast notification helper
+function showToast(message) {
+  const toast = document.getElementById('toast-notification');
+  const toastMessage = document.getElementById('toast-message');
+  if (toast && toastMessage) {
+    toastMessage.textContent = message;
+    toast.classList.add('show');
+    setTimeout(() => {
+      toast.classList.remove('show');
+    }, 3500);
+  }
+}
+
+// Open adopt interest modal
+function openAdoptInterestModal(animal) {
+  const modal = document.getElementById('modal-adopt-interest');
+  const modalBody = document.getElementById('modal-adopt-body');
+  if (!modal || !modalBody) return;
+
+  modalBody.innerHTML = `
+    <div style="display: flex; gap: var(--space-16); align-items: center; margin-bottom: var(--space-20); background-color: #f8fafc; padding: var(--space-16); border-radius: var(--radius-lg); border: 1px solid var(--color-card-border);">
+      <img src="${animal.image}" alt="${animal.name}" style="width: 70px; height: 70px; border-radius: 50%; object-fit: cover; border: 3px solid var(--color-primary);">
+      <div>
+        <h4 style="margin: 0 0 4px 0; font-size: var(--font-size-lg); font-weight: 600;">${animal.name}</h4>
+        <p style="margin: 0; font-size: var(--font-size-sm); color: var(--color-text-secondary);">${animal.species} • ${animal.breed} • ${animal.age}</p>
+        <span class="badge ${animal.status === 'Disponível' ? 'badge-success' : 'badge-warning'}" style="margin-top: 6px; display: inline-block;">${animal.status}</span>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Seu Nome Completo *</label>
+      <input type="text" class="form-control" id="adopt-user-name" required placeholder="Ex: Maria Clara">
+    </div>
+    <div class="form-row" style="display: flex; gap: var(--space-12);">
+      <div class="form-group" style="flex: 1;">
+        <label class="form-label">Telefone / WhatsApp *</label>
+        <input type="tel" class="form-control" id="adopt-user-phone" required placeholder="(11) 99999-9999">
+      </div>
+      <div class="form-group" style="flex: 1;">
+        <label class="form-label">Email</label>
+        <input type="email" class="form-control" id="adopt-user-email" placeholder="seu@email.com">
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Mensagem ou Perguntas (opcional)</label>
+      <textarea class="form-control" id="adopt-user-msg" rows="2" placeholder="Ex: Gostaria de saber mais sobre o temperamento e agendar uma visita."></textarea>
+    </div>
+  `;
+
+  modal.classList.add('active');
+}
+
+// Populate adoption grid using patient-card structure with real animal photos
+function populateAdoptionGrid() {
+  const container = document.getElementById('adoption-grid');
+  if (!container) return;
+  container.innerHTML = '';
+  
+  const filtered = data.adoption.filter(animal => {
+    const matchesFilter = currentAdoptionFilter === 'all' || animal.species.toLowerCase() === currentAdoptionFilter.toLowerCase();
+    const searchLower = currentAdoptionSearch.toLowerCase().trim();
+    const matchesSearch = !searchLower || 
+      animal.name.toLowerCase().includes(searchLower) ||
+      animal.breed.toLowerCase().includes(searchLower) ||
+      animal.species.toLowerCase().includes(searchLower) ||
+      animal.description.toLowerCase().includes(searchLower);
+    return matchesFilter && matchesSearch;
+  });
+
+  if (filtered.length === 0) {
+    container.innerHTML = `
+      <div style="grid-column: 1 / -1; text-align: center; padding: var(--space-32); color: var(--color-text-secondary);">
+        <i class="fas fa-search" style="font-size: 36px; margin-bottom: var(--space-12); opacity: 0.5;"></i>
+        <p>Nenhum animal encontrado para a busca realizada.</p>
+      </div>
+    `;
+    return;
+  }
+
+  filtered.forEach(animal => {
+    const card = document.createElement('div');
+    card.className = 'patient-card adoption-card';
+    const badgeClass = animal.status === 'Disponível' ? 'badge-success' : 'badge-warning';
+    
+    card.innerHTML = `
+      <div class="patient-photo-wrapper">
+        <img src="${animal.image}" alt="${animal.name}" class="patient-photo" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1543466835-00a7907e9de1?w=400';">
+        <span class="adoption-badge ${badgeClass}">${animal.status}</span>
+      </div>
+      <h4>${animal.name}</h4>
+      <p><strong>${animal.species}</strong> - ${animal.breed}</p>
+      <p><i class="fas fa-calendar-alt"></i> ${animal.age} • <i class="fas fa-venus-mars"></i> ${animal.gender} (${animal.size})</p>
+      <p class="adoption-desc">${animal.description}</p>
+      <div class="adoption-card-actions">
+        <button class="btn btn-sm btn-primary btn-adopt" data-id="${animal.id}">
+          <i class="fas fa-heart"></i> Quero Adotar
+        </button>
+      </div>
+    `;
+    container.appendChild(card);
+  });
+
+  // Attach click events to "Quero Adotar" buttons
+  container.querySelectorAll('.btn-adopt').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const animalId = parseInt(btn.getAttribute('data-id'), 10);
+      const animal = data.adoption.find(a => a.id === animalId);
+      if (animal) {
+        openAdoptInterestModal(animal);
+      }
+    });
+  });
+}
+
+// Setup Adoption Event Listeners
+function setupAdoptionEvents() {
+  // Filter buttons
+  const filterBtns = document.querySelectorAll('#adoption-filters button');
+  filterBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      filterBtns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      currentAdoptionFilter = btn.getAttribute('data-filter');
+      populateAdoptionGrid();
+    });
+  });
+
+  // Search input
+  const searchInput = document.getElementById('adoption-search');
+  if (searchInput) {
+    searchInput.addEventListener('input', (e) => {
+      currentAdoptionSearch = e.target.value;
+      populateAdoptionGrid();
+    });
+  }
+
+  // Modal: Add Animal
+  const btnOpenAddModal = document.getElementById('btn-open-adoption-modal');
+  const modalAdd = document.getElementById('modal-add-animal');
+  const btnCloseAddModal = document.getElementById('modal-close-btn');
+  const btnCancelAddModal = document.getElementById('modal-cancel-btn');
+  const formAddAnimal = document.getElementById('form-add-animal');
+
+  if (btnOpenAddModal && modalAdd) {
+    btnOpenAddModal.addEventListener('click', () => {
+      modalAdd.classList.add('active');
+    });
+  }
+
+  const closeAddModal = () => {
+    if (modalAdd) {
+      modalAdd.classList.remove('active');
+      if (formAddAnimal) formAddAnimal.reset();
+    }
+  };
+
+  if (btnCloseAddModal) btnCloseAddModal.addEventListener('click', closeAddModal);
+  if (btnCancelAddModal) btnCancelAddModal.addEventListener('click', closeAddModal);
+
+  if (formAddAnimal) {
+    formAddAnimal.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const name = document.getElementById('animal-name').value;
+      const species = document.getElementById('animal-species').value;
+      const gender = document.getElementById('animal-gender').value;
+      const breed = document.getElementById('animal-breed').value;
+      const age = document.getElementById('animal-age').value;
+      const size = document.getElementById('animal-size').value;
+      const status = document.getElementById('animal-status').value;
+      let image = document.getElementById('animal-image').value.trim();
+      const desc = document.getElementById('animal-desc').value.trim() || 'Animal saudável pronto para um lar amoroso.';
+
+      if (!image) {
+        image = species === 'Gato' ? 'images/adoption/simba.jpg' : 'images/adoption/pipoca.jpg';
+      }
+
+      const newAnimal = {
+        id: Date.now(),
+        name,
+        species,
+        breed,
+        age,
+        gender,
+        size,
+        status,
+        image,
+        description: desc
+      };
+
+      data.adoption.unshift(newAnimal);
+      closeAddModal();
+      populateAdoptionGrid();
+      showToast(`${name} cadastrado(a) para adoção com sucesso!`);
+    });
+  }
+
+  // Modal: Interest in Adoption
+  const modalAdopt = document.getElementById('modal-adopt-interest');
+  const btnCloseAdoptModal = document.getElementById('modal-adopt-close-btn');
+  const btnCancelAdoptModal = document.getElementById('modal-adopt-cancel-btn');
+  const formAdopt = document.getElementById('form-adopt-interest');
+
+  const closeAdoptModal = () => {
+    if (modalAdopt) modalAdopt.classList.remove('active');
+  };
+
+  if (btnCloseAdoptModal) btnCloseAdoptModal.addEventListener('click', closeAdoptModal);
+  if (btnCancelAdoptModal) btnCancelAdoptModal.addEventListener('click', closeAdoptModal);
+
+  if (formAdopt) {
+    formAdopt.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const userName = document.getElementById('adopt-user-name')?.value || 'Tutor';
+      closeAdoptModal();
+      showToast(`Obrigado, ${userName}! Seu interesse foi registrado. Entraremos em contato.`);
+    });
+  }
+
+  // Close modals on overlay click
+  [modalAdd, modalAdopt].forEach(m => {
+    if (m) {
+      m.addEventListener('click', (e) => {
+        if (e.target === m) {
+          m.classList.remove('active');
+        }
+      });
+    }
+  });
+}
+
 // Initialize app
 function initApp() {
   populateAppointmentsTable();
@@ -381,6 +713,8 @@ function initApp() {
   populateAppointmentsList();
   populatePatientsGrid();
   populateTeamGrid();
+  populateAdoptionGrid();
+  setupAdoptionEvents();
   initializeCharts();
 }
 
